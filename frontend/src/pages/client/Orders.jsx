@@ -116,9 +116,6 @@ const Orders = () => {
 
                 {/* Header */}
                 <div className="flex items-center gap-[12px] mb-[28px]">
-                    <button onClick={() => navigate(-1)} className="w-9 h-9 flex items-center justify-center rounded-full bg-white/5 border border-white/10 text-slate-400 hover:text-white hover:bg-white/10 transition-colors shrink-0">
-                        <ArrowLeft size={18} />
-                    </button>
                     <h1 className="font-display text-[24px] font-bold text-white">{t('orders.title')}</h1>
                     <span className="ml-auto font-sans text-[13px] text-slate-500">{orders.length} {t('orders.items')}</span>
                 </div>
