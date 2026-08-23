@@ -2,13 +2,14 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Plus } from 'lucide-react';
-import API_BASE_URL from '../config/api';
 
 const getImageUrl = (image) => {
     if (!image) return '/placeholder.png';
-    if (image.startsWith('/uploads/')) {
-        return `${API_BASE_URL.replace(/\/api$/, '')}${image}`;
+    // If it's an absolute URL from the backend (e.g. old uploaded images), keep as-is
+    if (image.startsWith('http')) {
+        return image;
     }
+    // Images in /uploads/ are stored in frontend/public, served by Vite directly
     return image;
 };
 

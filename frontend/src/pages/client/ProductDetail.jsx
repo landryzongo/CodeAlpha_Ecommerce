@@ -83,16 +83,16 @@ const ProductDetail = () => {
                 
                 {/* Left: Product Image */}
                 <div className="w-full lg:w-[45%] flex flex-col gap-[24px]">
-                    <div className="relative w-full aspect-square md:aspect-[4/3] lg:aspect-square rounded-[24px] glass-card flex items-center justify-center p-[24px] group overflow-hidden">
+                    <div className="relative w-full aspect-square md:aspect-[4/3] lg:aspect-square rounded-[24px] overflow-hidden group">
                         <motion.div 
                             animate={{ y: [0, -8, 0] }}
                             transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-                            className="w-full h-full relative z-0 flex items-center justify-center"
+                            className="w-full h-full relative z-0"
                         >
                             <img 
                                 src={getImageUrl(product.image)} 
                                 alt={product.name} 
-                                className={`max-h-[80%] max-w-[80%] object-contain drop-shadow-[0_20px_30px_rgba(0,0,0,0.4)] transition-transform duration-500 group-hover:scale-105 ${isOutOfStock ? 'grayscale opacity-70' : ''}`}
+                                className={`w-full h-full object-cover transition-transform duration-500 group-hover:scale-105 ${isOutOfStock ? 'grayscale opacity-70' : ''}`}
                             />
                         </motion.div>
                         <button 
@@ -191,8 +191,8 @@ const ProductDetail = () => {
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-[24px]">
                         {relatedProducts.map(related => (
                             <Link key={related._id || related.id} to={`/product/${related._id || related.id}`} className="flex flex-col gap-[12px] group">
-                                <div className="w-full aspect-square rounded-[24px] glass-card flex items-center justify-center p-[20px] border border-white/10 overflow-hidden">
-                                    <img src={getImageUrl(related.image)} alt={related.name} className="w-[80%] h-[80%] object-contain group-hover:scale-110 transition-transform duration-500" />
+                                <div className="w-full aspect-square rounded-[24px] overflow-hidden border border-white/10">
+                                    <img src={getImageUrl(related.image)} alt={related.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
                                 </div>
                                 <div className="flex flex-col px-2">
                                     <span className="font-sans text-[14px] font-semibold text-slate-400 line-clamp-1">{related.name}</span>

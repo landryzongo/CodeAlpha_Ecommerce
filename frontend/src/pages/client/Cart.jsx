@@ -3,7 +3,7 @@ import { useCart } from '../../context/CartContext';
 import { ShoppingBag, ArrowLeft, Trash2, Plus, Minus, Heart, Lock, CreditCard } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import API_BASE_URL from '../../config/api';
+
 
 const Cart = () => {
     const { cart, removeFromCart, updateQuantity, totalAmount, totalItems } = useCart();
@@ -14,10 +14,8 @@ const Cart = () => {
     };
 
     const getImageUrl = (image) => {
-        if (!image) return 'https://via.placeholder.com/400';
-        if (image.startsWith('/uploads/')) {
-            return `${API_BASE_URL.replace(/\/api$/, '')}${image}`;
-        }
+        if (!image) return '/placeholder.png';
+        if (image.startsWith('http')) return image;
         return image;
     };
 
@@ -86,11 +84,11 @@ const Cart = () => {
                                     className="h-auto md:h-[120px] bg-[#0f1524] border border-white/5 rounded-[20px] p-[16px] flex flex-col md:flex-row items-start md:items-center gap-[16px] hover:-translate-y-[2px] transition-transform"
                                 >
                                     {/* Thumbnail */}
-                                    <div className="w-[80px] h-[80px] bg-[#1a2133] rounded-[14px] shrink-0 overflow-hidden flex items-center justify-center">
+                                    <div className="w-[80px] h-[80px] bg-[#1a2133] rounded-[14px] shrink-0 overflow-hidden">
                                         <img
                                             src={getImageUrl(item.image)}
                                             alt={item.name}
-                                            className="w-full h-full object-contain p-2"
+                                            className="w-full h-full object-cover"
                                         />
                                     </div>
                                     
