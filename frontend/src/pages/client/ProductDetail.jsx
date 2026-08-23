@@ -4,6 +4,7 @@ import { Heart, Star, ShoppingBag, Plus, Minus } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useCart } from '../../context/CartContext';
 import { useProducts } from '../../hooks/useProducts';
+import toast from 'react-hot-toast';
 
 
 const ProductDetail = () => {
@@ -26,7 +27,18 @@ const ProductDetail = () => {
 
     const handleAddToCart = () => {
         if (product && quantity > 0) {
+            const stock = Number(product.stock) || 0;
+            if (stock === 0) {
+                toast.error('Rupture de stock');
+                return;
+            }
             addToCart(product, quantity);
+            toast.success(
+                <div className="flex flex-col gap-1">
+                    <span className="font-bold text-[14px]">Ajouté au panier</span>
+                    <span className="text-[12px] opacity-80">{product.name}</span>
+                </div>
+            );
         }
     };
 
