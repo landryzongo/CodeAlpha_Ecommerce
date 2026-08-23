@@ -4,7 +4,7 @@ import { Heart, Share2, ArrowLeft, Star, ShoppingBag, Plus, Minus } from 'lucide
 import { motion } from 'framer-motion';
 import { useCart } from '../../context/CartContext';
 import { useProducts } from '../../hooks/useProducts';
-import API_BASE_URL from '../../config/api';
+
 
 const ProductDetail = () => {
     const { id } = useParams();
@@ -32,10 +32,8 @@ const ProductDetail = () => {
     };
 
     const getImageUrl = (image) => {
-        if (!image) return 'https://via.placeholder.com/400';
-        if (image.startsWith('/uploads/')) {
-            return `${API_BASE_URL.replace(/\/api$/, '')}${image}`;
-        }
+        if (!image) return '/placeholder.png';
+        if (image.startsWith('http')) return image;
         return image;
     };
 
