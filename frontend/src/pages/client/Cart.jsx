@@ -1,6 +1,6 @@
 import React from 'react';
 import { useCart } from '../../context/CartContext';
-import { ShoppingBag, ArrowLeft, Trash2, Plus, Minus, Heart, Lock, CreditCard } from 'lucide-react';
+import { ShoppingBag, Trash2, Plus, Minus, Heart, Lock } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -63,10 +63,7 @@ const Cart = () => {
                     
                     {/* Header */}
                     <div className="h-[56px] flex items-center gap-[12px] mb-[16px]">
-                        <button onClick={() => navigate(-1)} className="lg:hidden w-10 h-10 flex items-center justify-center rounded-full bg-white/5 text-[#667eea] hover:bg-white/10 transition-colors">
-                            <ArrowLeft size={20} />
-                        </button>
-                        <h2 className="font-display text-[24px] font-semibold text-white">Your Cart</h2>
+                    <h2 className="font-display text-[24px] font-semibold text-white">Your Cart</h2>
                         <span className="font-sans text-[14px] text-slate-400">
                             ({totalItems} items)
                         </span>

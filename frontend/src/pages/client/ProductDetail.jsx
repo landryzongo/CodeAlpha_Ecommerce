@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate, Link } from 'react-router-dom';
-import { Heart, Share2, ArrowLeft, Star, ShoppingBag, Plus, Minus } from 'lucide-react';
+import { useParams, Link } from 'react-router-dom';
+import { Heart, Star, ShoppingBag, Plus, Minus } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useCart } from '../../context/CartContext';
 import { useProducts } from '../../hooks/useProducts';
@@ -8,7 +8,6 @@ import { useProducts } from '../../hooks/useProducts';
 
 const ProductDetail = () => {
     const { id } = useParams();
-    const navigate = useNavigate();
     const { addToCart } = useCart();
     const { products, loading: productsLoading } = useProducts();
     const [product, setProduct] = useState(null);
@@ -69,15 +68,6 @@ const ProductDetail = () => {
             </header>
 
             <main className="relative z-10 flex-grow px-[16px] md:px-[40px] py-[32px] md:py-[40px] max-w-[1120px] mx-auto w-full flex flex-col pb-[120px]">
-            <div className="flex items-center justify-between mb-[24px]">
-                <div className="flex items-center gap-[12px]">
-                    <button onClick={() => navigate(-1)} className="w-9 h-9 flex items-center justify-center rounded-full glass-card text-[#667eea] hover:bg-white/10 transition-colors">
-                        <ArrowLeft size={18} />
-                    </button>
-                    <span className="font-sans text-[13px] text-slate-400">Back to products</span>
-                </div>
-                {/* Touche partage supprimée selon la demande */}
-            </div>
 
             <div className="flex flex-col lg:flex-row gap-[32px] lg:gap-[48px] items-start">
                 
