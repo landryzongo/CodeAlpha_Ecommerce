@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useCart } from '../../context/CartContext';
-import { Lock, Check, CreditCard, ChevronDown, MessageCircle, ShoppingBag } from 'lucide-react';
+import { Lock, Check, CreditCard, ChevronDown } from 'lucide-react';
 import axios from 'axios';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
@@ -10,7 +10,6 @@ import API_BASE_URL from '../../config/api';
 
 const Checkout = () => {
     const { cart, totalAmount, clearCart, totalItems } = useCart();
-    const settings = { whatsapp_number: '22677740701' };
     const { user } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
