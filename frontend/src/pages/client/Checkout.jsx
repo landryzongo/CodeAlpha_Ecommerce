@@ -3,18 +3,18 @@ import { useCart } from '../../context/CartContext';
 import { Lock, Check, CreditCard, ChevronDown } from 'lucide-react';
 import axios from 'axios';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useNavigate, useLocation, Link } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { useAuth } from '../../context/AuthContext';
 import API_BASE_URL from '../../config/api';
 import { useTranslation } from 'react-i18next';
+import PaymentCardForm from '../../components/PaymentCard';
 
 const Checkout = () => {
     const { t } = useTranslation();
     const { cart, totalAmount, clearCart, totalItems } = useCart();
     const { user } = useAuth();
     const navigate = useNavigate();
-    const location = useLocation();
     
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
@@ -183,7 +183,7 @@ const Checkout = () => {
                         {/* Payment Method */}
                         <div className="flex flex-col gap-[16px]">
                             <h2 className="text-[13px] text-slate-400 font-semibold mb-[4px]">{t('checkout.payment')}</h2>
-                            <div className="flex gap-[16px]">
+                            <div className="flex gap-[16px] mb-3">
                                 <button 
                                     type="button"
                                     onClick={() => setPaymentMethod('card')}
@@ -195,40 +195,55 @@ const Checkout = () => {
                                         </div>
                                     )}
                                     <CreditCard size={24} className={paymentMethod === 'card' ? "text-white" : "text-slate-400"} />
-                                    <span className={`text-[13px] font-bold ${paymentMethod === 'card' ? "text-white" : "text-slate-400"}`}>Credit Card</span>
+                                    <span className={`text-[13px] font-bold ${paymentMethod === 'card' ? "text-white" : "text-slate-400"}`}>Carte bancaire</span>
                                 </button>
                                 
                                 <button 
                                     type="button"
-                                    onClick={() => setPaymentMethod('paypal')}
-                                    className={`flex-1 rounded-[16px] p-[16px] border ${paymentMethod === 'paypal' ? 'bg-[#1a2133] border-[#667eea]' : 'bg-[#121827] border-white/5'} flex flex-col items-center justify-center gap-3 relative transition-all`}
+                                    onClick={() => setPaymentMethod('cash')}
+                                    className={`flex-1 rounded-[16px] p-[16px] border ${paymentMethod === 'cash' ? 'bg-[#1a2133] border-[#667eea]' : 'bg-[#121827] border-white/5'} flex flex-col items-center justify-center gap-3 relative transition-all`}
                                 >
-                                    {paymentMethod === 'paypal' && (
+                                    {paymentMethod === 'cash' && (
                                         <div className="absolute top-2 right-2 w-5 h-5 bg-[#667eea] rounded-full flex items-center justify-center">
                                             <Check size={12} className="text-white" />
                                         </div>
                                     )}
-                                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className={`w-6 h-6 ${paymentMethod === 'paypal' ? "text-white" : "text-slate-400"}`}>
-                                        <path d="M7.076 21.337H2.47a.641.641 0 0 1-.633-.74l3.144-20.106A.641.641 0 0 1 5.614 0h7.153c3.836 0 5.86 1.666 5.66 4.975-.025.427-.084.85-.18 1.258-.456 2.05-1.85 3.518-3.793 4.29-1.32.52-2.82.72-4.34.72H8.38a.641.641 0 0 0-.633.535l-.67 4.288-.04.228-.62 3.962a.64.64 0 0 1-.632.54z" fill="currentColor"/>
-                                        <path d="M21.503 5.485A6.974 6.974 0 0 0 19.53 4.31a8.17 8.17 0 0 0-2.484-.555l-.364-.02h-.146c-2.316 0-4.306.914-5.32 2.766-.543.99-.785 2.146-.666 3.238.165 1.5.875 2.83 2.053 3.738a5.1 5.1 0 0 0 3.09 1.057h.036c1.696 0 3.26-.64 4.38-1.782 1.05-1.072 1.638-2.527 1.654-4.1.006-.776-.11-1.558-.337-2.313a6.83 6.83 0 0 0-.91-1.854z" fill="currentColor" fillOpacity="0.5"/>
-                                    </svg>
-                                    <span className={`text-[13px] font-bold ${paymentMethod === 'paypal' ? "text-white" : "text-slate-400"}`}>PayPal</span>
+                                    <span className={`text-[24px] ${paymentMethod === 'cash' ? '' : 'opacity-40'}`}>💵</span>
+                                    <span className={`text-[13px] font-bold ${paymentMethod === 'cash' ? "text-white" : "text-slate-400"}`}>{t('checkout.cash')}</span>
                                 </button>
                             </div>
+
+                            {/* Card payment form injected here */}
+                            <AnimatePresence>
+                                {paymentMethod === 'card' && (
+                                    <motion.div
+                                        initial={{ opacity: 0, y: 10 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        exit={{ opacity: 0, y: -10 }}
+                                        transition={{ duration: 0.2 }}
+                                    >
+                                        <PaymentCardForm
+                                            onSuccess={placeOrder}
+                                        />
+                                    </motion.div>
+                                )}
+                            </AnimatePresence>
                         </div>
 
-                        <button 
-                            type="submit"
-                            form="checkout-form"
-                            disabled={loading || cart.length === 0}
-                            className={`w-full py-[18px] rounded-[12px] font-sans text-[16px] font-bold transition-all mt-[8px] ${loading || cart.length === 0 ? 'bg-slate-800 text-slate-500 cursor-not-allowed' : 'bg-gradient-to-r from-[#667eea] to-[#764ba2] text-white shadow-lg hover:opacity-90 active:scale-95'}`}
-                        >
-                            {loading ? (
-                                <div className="w-6 h-6 border-2 border-white border-t-transparent rounded-full animate-spin mx-auto"></div>
-                            ) : (
-                                t('checkout.place_order')
-                            )}
-                        </button>
+                        {paymentMethod === 'cash' && (
+                            <button 
+                                type="submit"
+                                form="checkout-form"
+                                disabled={loading || cart.length === 0}
+                                className={`w-full py-[18px] rounded-[12px] font-sans text-[16px] font-bold transition-all mt-[8px] ${loading || cart.length === 0 ? 'bg-slate-800 text-slate-500 cursor-not-allowed' : 'bg-gradient-to-r from-[#667eea] to-[#764ba2] text-white shadow-lg hover:opacity-90 active:scale-95'}`}
+                            >
+                                {loading ? (
+                                    <div className="w-6 h-6 border-2 border-white border-t-transparent rounded-full animate-spin mx-auto"></div>
+                                ) : (
+                                    t('checkout.place_order')
+                                )}
+                            </button>
+                        )}
                     </form>
                 </motion.div>
 
