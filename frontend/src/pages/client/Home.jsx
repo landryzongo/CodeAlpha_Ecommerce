@@ -57,7 +57,7 @@ const Home = () => {
         <main className="flex-grow px-[16px] md:px-[40px] py-[24px] pb-32 md:pb-[40px] flex flex-col gap-[32px]">
             
             {/* Top Categories Bar (Horizontal) */}
-            <div className="hidden md:flex items-center justify-between border-b border-white/10 pb-[4px] overflow-x-auto scrollbar-hide">
+            <div className="hidden md:flex items-center justify-between border-b border-white/10 pb-[4px] overflow-x-auto overflow-y-hidden scrollbar-hide">
                 <div className="flex items-center gap-[32px]">
                     <button 
                         onClick={() => handleCategoryClick('Tous')} 
@@ -111,7 +111,7 @@ const Home = () => {
                 <div className="flex flex-col gap-[24px] w-full">
                     
                     {/* Mobile Category Chips */}
-                    <div className="md:hidden flex overflow-x-auto gap-[12px] pb-[12px] snap-x scrollbar-hide">
+                    <div className="md:hidden flex overflow-x-auto overflow-y-hidden gap-[12px] pb-[12px] snap-x scrollbar-hide">
                         <button 
                             onClick={() => handleCategoryClick('Tous')}
                             className={`whitespace-nowrap px-[20px] py-[8px] rounded-full font-sans text-[14px] font-semibold snap-start transition-colors ${activeCategory === 'Tous' ? 'bg-[#2e3152] text-white' : 'glass-card text-slate-400'}`}
