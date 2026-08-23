@@ -7,8 +7,10 @@ import { useNavigate, useLocation, Link } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { useAuth } from '../../context/AuthContext';
 import API_BASE_URL from '../../config/api';
+import { useTranslation } from 'react-i18next';
 
 const Checkout = () => {
+    const { t } = useTranslation();
     const { cart, totalAmount, clearCart, totalItems } = useCart();
     const { user } = useAuth();
     const navigate = useNavigate();
@@ -57,22 +59,21 @@ const Checkout = () => {
             }
 
             const orderItems = cart.map(item => ({
-                productId: item._id,
-                quantity: item.quantity,
-                price: Number(item.price),
-                name: item.name
+                product: item._id,
+                quantity: item.quantity
             }));
 
             const orderData = {
-                userId: user?.id,
-                items: orderItems,
-                totalAmount: totalAmount,
+                products: orderItems,
                 customerName: formData.fullName,
                 deliveryAddress: formData.city ? `${formData.address}, ${formData.city} ${formData.zip}` : formData.address,
-                paymentMethod: paymentMethod // 'card' or 'paypal'
+                paymentMethod: paymentMethod
             };
 
-            const response = await axios.post(`${API_BASE_URL}/orders`, orderData);
+            const token = localStorage.getItem('token');
+            const response = await axios.post(`${API_BASE_URL}/orders`, orderData, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
             setOrderId(response.data._id || `NO-${Math.floor(Math.random() * 10000)}`);
             
             setSuccess(true);
@@ -101,20 +102,6 @@ const Checkout = () => {
                 <div className="absolute bottom-[-20%] right-[-10%] w-[60%] h-[60%] bg-[#764ba2] rounded-full blur-[150px] opacity-10"></div>
             </div>
 
-            {/* Custom Header for Checkout */}
-            <header className="relative z-10 w-full px-[24px] md:px-[64px] py-[24px] flex justify-between items-center">
-                <Link to="/" className="flex flex-col justify-center group shrink-0 w-auto leading-none">
-                    <img src="/logo.png" alt="NovaTech" className="w-[120px] md:w-[150px] h-auto object-contain group-hover:scale-105 transition-transform origin-left" />
-                    <span className="font-sans text-[9px] text-slate-400 font-semibold tracking-wide hidden md:block pl-1 mt-[2px]">
-                        Discover. Shop. Upgrade.
-                    </span>
-                </Link>
-                <div className="flex items-center gap-2 text-slate-300">
-                    <Lock size={16} />
-                    <span className="text-[14px] font-semibold">Secure Checkout</span>
-                </div>
-            </header>
-
             {/* Main Content */}
             <main className="relative z-10 flex-grow w-full max-w-6xl mx-auto px-[16px] md:px-[24px] py-[24px] flex flex-col lg:flex-row items-center justify-center gap-[40px] md:gap-[80px]">
                 
@@ -124,13 +111,13 @@ const Checkout = () => {
                     animate={{ opacity: 1, x: 0 }}
                     className="w-full lg:w-[480px] bg-[#0f1524] border border-white/5 rounded-[24px] p-[24px] md:p-[32px] shadow-2xl shrink-0"
                 >
-                    <h1 className="font-display text-[24px] font-bold text-white mb-[32px]">Checkout</h1>
+                    <h1 className="font-display text-[24px] font-bold text-white mb-[32px]">{t('checkout.title')}</h1>
 
                     {/* Order Summary Toggle (Mockup Style) */}
                     <div className="bg-[#1a2133] border border-white/5 rounded-[16px] p-[20px] flex items-center justify-between mb-[32px] cursor-pointer hover:bg-[#20283d] transition-colors">
                         <div className="flex flex-col">
-                            <span className="text-[14px] text-slate-300 font-semibold">Order Summary</span>
-                            <span className="text-[13px] text-slate-400">{totalItems} items</span>
+                            <span className="text-[14px] text-slate-300 font-semibold">{t('checkout.summary')}</span>
+                            <span className="text-[13px] text-slate-400">{totalItems} {t('checkout.items')}</span>
                         </div>
                         <div className="flex items-center gap-3">
                             <span className="text-[16px] font-bold text-white">${totalAmount.toLocaleString()}</span>
@@ -142,10 +129,10 @@ const Checkout = () => {
                         
                         {/* Shipping Details */}
                         <div className="flex flex-col gap-[16px]">
-                            <h2 className="text-[13px] text-slate-400 font-semibold mb-[4px]">Shipping Details</h2>
+                            <h2 className="text-[13px] text-slate-400 font-semibold mb-[4px]">{t('checkout.shipping_info')}</h2>
                             
                             <div className="bg-[#1a2133] rounded-[12px] p-[12px] pb-[8px] flex flex-col relative focus-within:ring-1 focus-within:ring-[#667eea]">
-                                <label className="text-[10px] text-slate-400 font-bold uppercase tracking-wider mb-1">Full Name</label>
+                                <label className="text-[10px] text-slate-400 font-bold uppercase tracking-wider mb-1">{t('checkout.full_name')}</label>
                                 <input 
                                     type="text" 
                                     id="fullName" 
@@ -157,7 +144,7 @@ const Checkout = () => {
                             </div>
 
                             <div className="bg-[#1a2133] rounded-[12px] p-[12px] pb-[8px] flex flex-col relative focus-within:ring-1 focus-within:ring-[#667eea]">
-                                <label className="text-[10px] text-slate-400 font-bold uppercase tracking-wider mb-1">Address</label>
+                                <label className="text-[10px] text-slate-400 font-bold uppercase tracking-wider mb-1">{t('checkout.address')}</label>
                                 <input 
                                     type="text" 
                                     id="address" 
@@ -170,7 +157,7 @@ const Checkout = () => {
 
                             <div className="flex gap-[12px]">
                                 <div className="flex-1 bg-[#1a2133] rounded-[12px] p-[12px] pb-[8px] flex flex-col relative focus-within:ring-1 focus-within:ring-[#667eea]">
-                                    <label className="text-[10px] text-slate-400 font-bold uppercase tracking-wider mb-1">City</label>
+                                    <label className="text-[10px] text-slate-400 font-bold uppercase tracking-wider mb-1">{t('checkout.city')}</label>
                                     <input 
                                         type="text" 
                                         id="city" 
@@ -195,7 +182,7 @@ const Checkout = () => {
 
                         {/* Payment Method */}
                         <div className="flex flex-col gap-[16px]">
-                            <h2 className="text-[13px] text-slate-400 font-semibold mb-[4px]">Payment Method</h2>
+                            <h2 className="text-[13px] text-slate-400 font-semibold mb-[4px]">{t('checkout.payment')}</h2>
                             <div className="flex gap-[16px]">
                                 <button 
                                     type="button"
@@ -239,7 +226,7 @@ const Checkout = () => {
                             {loading ? (
                                 <div className="w-6 h-6 border-2 border-white border-t-transparent rounded-full animate-spin mx-auto"></div>
                             ) : (
-                                "Place order"
+                                t('checkout.place_order')
                             )}
                         </button>
                     </form>

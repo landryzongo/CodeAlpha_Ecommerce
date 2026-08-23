@@ -3,9 +3,10 @@ import { useCart } from '../../context/CartContext';
 import { ShoppingBag, Trash2, Plus, Minus, Heart, Lock } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-
+import { useTranslation } from 'react-i18next';
 
 const Cart = () => {
+    const { t } = useTranslation();
     const { cart, removeFromCart, updateQuantity, totalAmount, totalItems } = useCart();
     const navigate = useNavigate();
 
@@ -30,10 +31,10 @@ const Cart = () => {
                     <div className="w-16 h-16 rounded-full bg-white/5 flex items-center justify-center mb-4 border border-white/10">
                         <ShoppingBag size={32} className="text-slate-400" />
                     </div>
-                    <h3 className="font-display text-[24px] font-bold text-white mb-2">Your cart is empty</h3>
-                    <p className="font-sans text-[16px] text-slate-400 mb-6">Looks like you haven't added anything yet.</p>
+                    <h3 className="font-display text-[24px] font-bold text-white mb-2">{t('cart.empty_title')}</h3>
+                    <p className="font-sans text-[16px] text-slate-400 mb-6">{t('cart.empty_sub')}</p>
                     <Link to="/" className="px-6 py-3 rounded-[16px] bg-gradient-to-r from-[#667eea] to-[#764ba2] font-sans text-[16px] text-white font-bold hover:brightness-110 transition-all inline-flex">
-                        Browse Products
+                        {t('cart.browse')}
                     </Link>
                 </div>
             </main>
@@ -46,16 +47,6 @@ const Cart = () => {
 
     return (
         <div className="min-h-screen bg-[#020617] text-white flex flex-col">
-            {/* Simple Navbar (Logo Only) */}
-            <header className="relative z-10 w-full px-[16px] md:px-[40px] py-[20px] flex items-center bg-[#020617]/90 backdrop-blur-[24px] border-b border-white/5 sticky top-0">
-                <Link to="/" className="flex flex-col justify-center group shrink-0 w-auto leading-none">
-                    <img src="/logo.png" alt="NovaTech" className="w-[120px] md:w-[150px] h-auto object-contain group-hover:scale-105 transition-transform origin-left" />
-                    <span className="font-sans text-[9px] text-slate-400 font-semibold tracking-wide hidden md:block pl-1 mt-[2px]">
-                        Discover. Shop. Upgrade.
-                    </span>
-                </Link>
-            </header>
-
             <main className="relative flex-grow w-full max-w-[1120px] mx-auto px-[16px] md:px-[24px] py-[32px] md:py-[40px] flex flex-col lg:flex-row items-start justify-center">
                 
                 {/* Left side: Cart Items List (65%) */}
@@ -63,9 +54,9 @@ const Cart = () => {
                     
                     {/* Header */}
                     <div className="h-[56px] flex items-center gap-[12px] mb-[16px]">
-                    <h2 className="font-display text-[24px] font-semibold text-white">Your Cart</h2>
+                    <h2 className="font-display text-[24px] font-semibold text-white">{t('cart.title')}</h2>
                         <span className="font-sans text-[14px] text-slate-400">
-                            ({totalItems} items)
+                            ({totalItems} {t('cart.items')})
                         </span>
                     </div>
 
@@ -92,7 +83,7 @@ const Cart = () => {
                                     {/* Info Block */}
                                     <div className="flex-1 min-w-0 flex flex-col justify-center h-full">
                                         <h3 className="font-display text-[16px] font-bold text-white truncate">{item.name}</h3>
-                                        <p className="font-sans text-[12px] text-[#22c55e] mt-1">Estimated delivery: {formattedDate}</p>
+                                        <p className="font-sans text-[12px] text-[#22c55e] mt-1">{t('cart.delivery')} {formattedDate}</p>
                                     </div>
                                     
                                     {/* Price & Actions Block */}
@@ -140,7 +131,7 @@ const Cart = () => {
                         {/* Promo Code Link */}
                         <div className="mt-4">
                             <button className="font-sans font-medium text-[14px] text-slate-400 hover:text-transparent hover:bg-clip-text hover:bg-gradient-to-r hover:from-[#667eea] hover:to-[#764ba2] transition-all text-left">
-                                + Add promo code
+                                {t('cart.promo')}
                             </button>
                         </div>
                     </div>
@@ -153,17 +144,17 @@ const Cart = () => {
                         {/* Price Lines */}
                         <div className="flex flex-col gap-[16px]">
                             <div className="flex justify-between items-center">
-                                <span className="font-sans text-[16px] text-slate-400">Subtotal</span>
+                                <span className="font-sans text-[16px] text-slate-400">{t('cart.subtotal')}</span>
                                 <span className="font-sans text-[16px] font-semibold text-white">${totalAmount.toLocaleString()}</span>
                             </div>
                             <div className="flex justify-between items-center">
-                                <span className="font-sans text-[16px] text-slate-400">Tax</span>
+                                <span className="font-sans text-[16px] text-slate-400">{t('cart.tax')}</span>
                                 <span className="font-sans text-[16px] font-semibold text-white">${tax.toLocaleString()}</span>
                             </div>
                             <div className="flex justify-between items-center">
-                                <span className="font-sans text-[16px] text-slate-400">Shipping</span>
+                                <span className="font-sans text-[16px] text-slate-400">{t('cart.shipping')}</span>
                                 <span className="font-sans text-[16px] font-semibold text-white">
-                                    {shippingCost === 0 ? 'Free' : `$${shippingCost}`}
+                                    {shippingCost === 0 ? t('cart.shipping_free') : `$${shippingCost}`}
                                 </span>
                             </div>
                         </div>
@@ -173,7 +164,7 @@ const Cart = () => {
 
                         {/* Total */}
                         <div className="flex justify-between items-end mb-[4px]">
-                            <span className="font-display text-[18px] font-bold text-white mb-[4px]">Total Amount</span>
+                            <span className="font-display text-[18px] font-bold text-white mb-[4px]">{t('cart.total')}</span>
                             <span className="font-display text-[28px] font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#667eea] to-[#764ba2] leading-none">
                                 ${grandTotal.toLocaleString()}
                             </span>
@@ -186,14 +177,14 @@ const Cart = () => {
                         >
                             {/* Shine effect pseudo-element mimicking via absolute div */}
                             <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent group-hover:animate-[shimmer_1.5s_infinite]"></div>
-                            <span className="relative z-10">Proceed to Checkout</span>
+                            <span className="relative z-10">{t('cart.checkout')}</span>
                         </button>
                         
                         {/* Security & Badges */}
                         <div className="flex flex-col items-center gap-4 mt-2">
                             <div className="flex items-center gap-2 text-slate-400">
                                 <Lock size={14} />
-                                <span className="font-sans text-[12px]">Secure Encrypted Checkout</span>
+                                <span className="font-sans text-[12px]">{t('cart.secure')}</span>
                             </div>
                             <div className="flex items-center gap-2">
                                 <div className="h-[32px] px-3 bg-[#1a2133] border border-white/5 rounded-[8px] flex items-center justify-center">

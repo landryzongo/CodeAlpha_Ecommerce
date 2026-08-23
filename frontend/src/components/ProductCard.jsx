@@ -13,7 +13,10 @@ const getImageUrl = (image) => {
     return image;
 };
 
+import { useTranslation } from 'react-i18next';
+
 const ProductCard = ({ product, index, onAddToCart }) => {
+    const { t } = useTranslation();
     const stock = Number(product.stock) || 0;
     const isOutOfStock = stock === 0;
 
@@ -45,7 +48,7 @@ const ProductCard = ({ product, index, onAddToCart }) => {
                     )}
 
                     <span className="absolute top-[12px] left-[12px] px-[12px] py-[4px] rounded-full bg-[#020617]/60 backdrop-blur-md text-white font-sans text-[10px] font-semibold border border-white/10">
-                        {isOutOfStock ? 'Out of Stock' : 'New Arrival'}
+                        {isOutOfStock ? t('home.out_of_stock') : t('home.new_arrival')}
                     </span>
                 </div>
 

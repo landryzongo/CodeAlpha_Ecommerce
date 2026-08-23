@@ -5,6 +5,7 @@ import { ArrowLeft, Package, ChevronRight, ShoppingBag, Check, RefreshCw } from 
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import API_BASE_URL from '../../config/api';
+import { useTranslation } from 'react-i18next';
 
 const STATUS_CONFIG = {
     completed: {
@@ -40,6 +41,7 @@ const STATUS_CONFIG = {
 const filters = ['All', 'Pending', 'Processing', 'Completed', 'Cancelled'];
 
 const Orders = () => {
+    const { t } = useTranslation();
     const { user } = useAuth();
     const navigate = useNavigate();
     const [orders, setOrders] = useState([]);
@@ -110,16 +112,6 @@ const Orders = () => {
                 <div className="absolute bottom-[-20%] left-[-10%] w-[50%] h-[50%] bg-[#764ba2] rounded-full blur-[150px] opacity-[0.06]"></div>
             </div>
 
-            {/* Simple Navbar (Logo Only) */}
-            <header className="relative z-20 w-full px-[16px] md:px-[40px] py-[20px] flex items-center bg-[#020617]/90 backdrop-blur-[24px] border-b border-white/5 sticky top-0">
-                <Link to="/" className="flex flex-col justify-center group shrink-0 w-auto leading-none">
-                    <img src="/logo.png" alt="NovaTech" className="w-[120px] md:w-[150px] h-auto object-contain group-hover:scale-105 transition-transform origin-left" />
-                    <span className="font-sans text-[9px] text-slate-400 font-semibold tracking-wide hidden md:block pl-1 mt-[2px]">
-                        Discover. Shop. Upgrade.
-                    </span>
-                </Link>
-            </header>
-
             <main className="relative z-10 flex-grow w-full max-w-[1120px] mx-auto px-[16px] py-[32px] md:py-[40px] flex flex-col pb-[100px]">
 
                 {/* Header */}
@@ -127,8 +119,8 @@ const Orders = () => {
                     <button onClick={() => navigate(-1)} className="w-9 h-9 flex items-center justify-center rounded-full bg-white/5 border border-white/10 text-slate-400 hover:text-white hover:bg-white/10 transition-colors shrink-0">
                         <ArrowLeft size={18} />
                     </button>
-                    <h1 className="font-display text-[24px] font-bold text-white">My Orders</h1>
-                    <span className="ml-auto font-sans text-[13px] text-slate-500">{orders.length} orders</span>
+                    <h1 className="font-display text-[24px] font-bold text-white">{t('orders.title')}</h1>
+                    <span className="ml-auto font-sans text-[13px] text-slate-500">{orders.length} {t('orders.items')}</span>
                 </div>
 
                 {/* Filter Tabs with sliding underline */}
@@ -167,12 +159,12 @@ const Orders = () => {
                         <div className="w-14 h-14 rounded-full bg-white/5 flex items-center justify-center mb-4 border border-white/10">
                             <ShoppingBag size={28} className="text-slate-500" />
                         </div>
-                        <h3 className="font-display text-[18px] font-bold text-white mb-2">No orders yet</h3>
+                        <h3 className="font-display text-[18px] font-bold text-white mb-2">{t('orders.empty')}</h3>
                         <p className="font-sans text-[14px] text-slate-400 mb-6">
-                            {activeFilter === 'All' ? 'Your purchase history will appear here.' : `No ${activeFilter.toLowerCase()} orders found.`}
+                            {t('orders.empty_sub')}
                         </p>
                         <Link to="/" className="px-5 py-2.5 rounded-full bg-gradient-to-r from-[#667eea] to-[#764ba2] font-sans text-[13px] text-white font-bold">
-                            Start Shopping
+                            {t('cart.browse')}
                         </Link>
                     </div>
                 ) : (
@@ -181,8 +173,9 @@ const Orders = () => {
                             {filteredOrders.map((order, idx) => {
                                 const statusCfg = STATUS_CONFIG[order.status] || STATUS_CONFIG.pending;
                                 const isCancelled = order.status === 'cancelled';
-                                const firstItem = order.items?.[0];
-                                const extraCount = (order.items?.length || 0) - 1;
+                                const productsArray = order.products || [];
+                                const firstItem = productsArray[0]?.product;
+                                const extraCount = productsArray.length > 1 ? productsArray.length - 1 : 0;
                                 const isHovered = hoveredOrder === order._id;
 
                                 return (
@@ -224,7 +217,7 @@ const Orders = () => {
                                             </p>
                                             {/* Ligne 2 : Items count + Order ID */}
                                             <p className="font-sans text-[12px] text-slate-500 leading-tight">
-                                                {order.items?.length || 1} item{(order.items?.length || 1) > 1 ? 's' : ''} • #{order._id.slice(-6).toUpperCase()}
+                                                {productsArray.length || 1} item{productsArray.length > 1 ? 's' : ''} • #{order._id.slice(-6).toUpperCase()}
                                             </p>
                                             {/* Ligne 3 : Date */}
                                             <p className="font-sans text-[12px] text-slate-500 leading-tight">
@@ -266,7 +259,7 @@ const Orders = () => {
                                                     backgroundClip: 'text',
                                                 }}
                                             >
-                                                ${order.totalAmount?.toLocaleString()}
+                                                ${order.totalPrice?.toLocaleString()}
                                             </span>
 
                                             {/* Badge Statut */}
@@ -279,7 +272,7 @@ const Orders = () => {
                                                 }}
                                             >
                                                 {statusCfg.showCheck && <Check size={10} strokeWidth={3} />}
-                                                {statusCfg.label}
+                                                {t(`orders.${order.status?.toLowerCase()}`) || statusCfg.label}
                                             </span>
 
                                             {/* Chevron */}

@@ -9,8 +9,10 @@ import {
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import API_BASE_URL from '../../config/api';
+import { useTranslation } from 'react-i18next';
 
 const Profile = () => {
+    const { t } = useTranslation();
     const { user, updateProfile, logout } = useAuth();
     const navigate = useNavigate();
     const [orders, setOrders] = useState([]);
@@ -148,7 +150,7 @@ const Profile = () => {
                                 className="w-full max-w-[480px] bg-[#0f172a] border-t border-white/10 rounded-t-[24px] p-[24px] pb-[48px]"
                             >
                                 <div className="flex items-center justify-between mb-[24px]">
-                                    <h2 className="font-display text-[20px] font-bold text-white">Edit Profile</h2>
+                                    <h2 className="font-display text-[20px] font-bold text-white">{t('profile.edit')}</h2>
                                     <button onClick={() => setEditing(false)} className="w-8 h-8 flex items-center justify-center rounded-full glass-card text-slate-400 hover:text-white transition-colors">
                                         <X size={18} />
                                     </button>
@@ -181,7 +183,7 @@ const Profile = () => {
                                         className="w-full py-[16px] rounded-[16px] bg-gradient-to-r from-[#667eea] to-[#764ba2] font-sans text-[16px] font-bold text-white flex items-center justify-center gap-2 hover:opacity-95 active:scale-95 transition-all mt-[8px]"
                                     >
                                         <Check size={20} />
-                                        Save Changes
+                                        {t('profile.save')}
                                     </button>
                                 </form>
                             </motion.div>
@@ -213,7 +215,7 @@ const Profile = () => {
                         className="glass-card rounded-[16px] p-[16px] flex items-center justify-center gap-[12px] w-full hover:-translate-y-1 transition-transform duration-300 shadow-[0_10px_30px_rgba(0,0,0,0.2)] hover:shadow-[0_15px_40px_rgba(255,100,100,0.1)] active:scale-95 group mt-[8px]"
                     >
                         <LogOut size={20} className="text-red-400 group-hover:text-red-300 transition-colors" />
-                        <span className="font-sans text-[16px] font-bold text-red-400 group-hover:text-red-300 transition-colors">Log out</span>
+                        <span className="font-sans text-[16px] font-bold text-red-400 group-hover:text-red-300 transition-colors">{t('profile.logout')}</span>
                     </button>
                 </section>
             </main>

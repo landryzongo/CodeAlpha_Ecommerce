@@ -1,6 +1,7 @@
 import React from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import Navbar from './components/Navbar';
+import Footer from './components/Footer';
 import Home from './pages/client/Home';
 import ProductDetail from './pages/client/ProductDetail';
 import Cart from './pages/client/Cart';
@@ -18,7 +19,6 @@ import ProtectedRoute from './components/ProtectedRoute';
 function App() {
     const location = useLocation();
     const isStandalonePage = ['/login'].includes(location.pathname);
-    const isHomePage = location.pathname === '/';
 
     if (isStandalonePage) {
         return (
@@ -53,7 +53,7 @@ function App() {
                                 duration: 3000,
                             }}
                         />
-                        {isHomePage && <Navbar />}
+                        <Navbar />
 
                         {/*
                           - Desktop: no padding-top needed because TopNavbar is sticky
@@ -88,6 +88,8 @@ function App() {
                                 </Routes>
                             </div>
                         </main>
+                        
+                        <Footer />
                     </div>
                 </CartProvider>
             </AuthProvider>

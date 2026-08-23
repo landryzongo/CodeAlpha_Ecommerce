@@ -25,19 +25,19 @@ const productsData = [
 
   // Audio
   { name: 'Sony WH-1000XM5', description: 'Casque à réduction de bruit active, 30h d\'autonomie.', price: 399, category: 'Audio', stock: 50, image: '/uploads/sony.jpg' },
-  { name: 'AirPods Pro 2', description: 'Écouteurs sans fil Apple, annulation de bruit avancée.', price: 279, category: 'Audio', stock: 40, image: '/placeholder.png' },
+  { name: 'AirPods Pro 2', description: 'Écouteurs sans fil Apple, annulation de bruit avancée.', price: 279, category: 'Audio', stock: 40, image: '/uploads/airpods.jpg' },
 
   // Écrans & Moniteurs
-  { name: 'LG UltraGear 27" OLED', description: 'Écran gaming 240Hz, temps de réponse 0.03ms.', price: 999, category: 'Écrans & Moniteurs', stock: 8, image: '/placeholder.png' },
-  { name: 'Dell UltraSharp 32" 4K', description: 'Écran professionnel avec hub USB-C intégré.', price: 859, category: 'Écrans & Moniteurs', stock: 12, image: '/placeholder.png' },
+  { name: 'LG UltraGear 27" OLED', description: 'Écran gaming 240Hz, temps de réponse 0.03ms.', price: 999, category: 'Écrans & Moniteurs', stock: 8, image: '/uploads/lg_oled.jpg' },
+  { name: 'Dell UltraSharp 32" 4K', description: 'Écran professionnel avec hub USB-C intégré.', price: 859, category: 'Écrans & Moniteurs', stock: 12, image: '/uploads/dell.jpg' },
 
   // Périphériques
-  { name: 'Logitech MX Master 3S', description: 'Souris sans fil ergonomique avec clics silencieux.', price: 129, category: 'Périphériques', stock: 60, image: '/placeholder.png' },
-  { name: 'Keychron Q1 Pro', description: 'Clavier mécanique custom sans fil, châssis aluminium.', price: 199, category: 'Périphériques', stock: 30, image: '/placeholder.png' },
+  { name: 'Logitech MX Master 3S', description: 'Souris sans fil ergonomique avec clics silencieux.', price: 129, category: 'Périphériques', stock: 60, image: '/uploads/logitech.jpg' },
+  { name: 'Keychron Q1 Pro', description: 'Clavier mécanique custom sans fil, châssis aluminium.', price: 199, category: 'Périphériques', stock: 30, image: '/uploads/keychron.jpg' },
 
   // Composants PC
-  { name: 'NVIDIA GeForce RTX 4090', description: 'La carte graphique ultime pour le gaming 4K et l\'IA.', price: 1899, category: 'Composants PC', stock: 3, image: '/placeholder.png' },
-  { name: 'AMD Ryzen 7 7800X3D', description: 'Le meilleur processeur gaming du moment.', price: 449, category: 'Composants PC', stock: 22, image: '/placeholder.png' },
+  { name: 'NVIDIA GeForce RTX 4090', description: 'La carte graphique ultime pour le gaming 4K et l\'IA.', price: 1899, category: 'Composants PC', stock: 3, image: '/uploads/rtx4090.jpg' },
+  { name: 'AMD Ryzen 7 7800X3D', description: 'Le meilleur processeur gaming du moment.', price: 449, category: 'Composants PC', stock: 22, image: '/uploads/ryzen.jpg' },
 
   // Accessoires
   { name: 'Chargeur Anker 100W GaN', description: 'Chargeur compact 2 ports USB-C et 1 port USB-A.', price: 69, category: 'Accessoires', stock: 100, image: '/placeholder.png' },

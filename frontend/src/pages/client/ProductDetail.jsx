@@ -5,9 +5,10 @@ import { motion } from 'framer-motion';
 import { useCart } from '../../context/CartContext';
 import { useProducts } from '../../hooks/useProducts';
 import toast from 'react-hot-toast';
-
+import { useTranslation } from 'react-i18next';
 
 const ProductDetail = () => {
+    const { t } = useTranslation();
     const { id } = useParams();
     const { addToCart } = useCart();
     const { products, loading: productsLoading } = useProducts();
@@ -29,13 +30,13 @@ const ProductDetail = () => {
         if (product && quantity > 0) {
             const stock = Number(product.stock) || 0;
             if (stock === 0) {
-                toast.error('Rupture de stock');
+                toast.error(t('toast.out_of_stock'));
                 return;
             }
             addToCart(product, quantity);
             toast.success(
                 <div className="flex flex-col gap-1">
-                    <span className="font-bold text-[14px]">Ajouté au panier</span>
+                    <span className="font-bold text-[14px]">{t('toast.added_to_cart')}</span>
                     <span className="text-[12px] opacity-80">{product.name}</span>
                 </div>
             );
@@ -68,16 +69,6 @@ const ProductDetail = () => {
                 <div className="absolute top-[-20%] right-[-10%] w-[50%] h-[50%] bg-[#667eea] rounded-full blur-[150px] opacity-[0.06]"></div>
                 <div className="absolute bottom-[-20%] left-[-10%] w-[50%] h-[50%] bg-[#764ba2] rounded-full blur-[150px] opacity-[0.06]"></div>
             </div>
-
-            {/* Simple Navbar (Logo Only) */}
-            <header className="relative z-20 w-full px-[16px] md:px-[40px] py-[20px] flex items-center bg-[#020617]/90 backdrop-blur-[24px] border-b border-white/5 sticky top-0">
-                <Link to="/" className="flex flex-col justify-center group shrink-0 w-auto leading-none">
-                    <img src="/logo.png" alt="NovaTech" className="w-[120px] md:w-[150px] h-auto object-contain group-hover:scale-105 transition-transform origin-left" />
-                    <span className="font-sans text-[9px] text-slate-400 font-semibold tracking-wide hidden md:block pl-1 mt-[2px]">
-                        Discover. Shop. Upgrade.
-                    </span>
-                </Link>
-            </header>
 
             <main className="relative z-10 flex-grow px-[16px] md:px-[40px] py-[32px] md:py-[40px] max-w-[1120px] mx-auto w-full flex flex-col pb-[120px]">
 
@@ -118,7 +109,7 @@ const ProductDetail = () => {
                             <div className={`flex items-center gap-[6px] px-[10px] py-[4px] rounded-full bg-[#22c55e]/10 border border-[#22c55e]/20 ${isOutOfStock ? 'bg-[#ef4444]/10 border-[#ef4444]/20' : ''}`}>
                                 <span className={`w-1.5 h-1.5 rounded-full shadow-[0_0_6px_currentColor] ${isOutOfStock ? 'bg-[#ef4444] text-[#ef4444]' : 'bg-[#22c55e] text-[#22c55e]'}`}></span>
                                 <span className={`font-sans text-[11px] font-semibold ${isOutOfStock ? 'text-[#ef4444]' : 'text-[#22c55e]'}`}>
-                                    {isOutOfStock ? 'Out of stock' : 'In stock'}
+                                    {isOutOfStock ? t('product.out_of_stock') : t('product.in_stock')}
                                 </span>
                             </div>
                         </div>
@@ -132,7 +123,7 @@ const ProductDetail = () => {
                                 <Star size={16} fill="currentColor" />
                                 <Star size={16} fill="currentColor" opacity={0.5} />
                             </div>
-                            <span className="font-sans text-[13px] text-slate-400 font-semibold">(128 reviews)</span>
+                            <span className="font-sans text-[13px] text-slate-400 font-semibold">(128 {t('product.reviews')})</span>
                         </div>
                     </div>
 
@@ -140,7 +131,7 @@ const ProductDetail = () => {
 
                     {/* Description */}
                     <div className="flex flex-col gap-[8px]">
-                        <h3 className="font-sans text-[15px] font-bold text-white">Description</h3>
+                        <h3 className="font-sans text-[15px] font-bold text-white">{t('product.description')}</h3>
                         <p className="font-sans text-[14px] text-slate-400 leading-relaxed">
                             {product.description || "Premium quality product engineered for performance and comfort. Perfect for your daily setup."}
                         </p>
@@ -151,7 +142,7 @@ const ProductDetail = () => {
                         
                         {!isOutOfStock && (
                             <div className="flex items-center gap-[12px]">
-                                <span className="font-sans text-[14px] font-bold text-white">Quantity</span>
+                                <span className="font-sans text-[14px] font-bold text-white">{t('product.quantity')}</span>
                                 <div className="glass-card rounded-full flex items-center p-1 border border-white/10">
                                     <button 
                                         onClick={() => setQuantity(q => Math.max(1, q - 1))}
@@ -179,7 +170,7 @@ const ProductDetail = () => {
                                 <div className="absolute inset-0 bg-white/20 -skew-x-[25deg] -translate-x-[150%] group-hover:animate-[shine_1.5s_ease-in-out_infinite]"></div>
                             )}
                             <ShoppingBag size={20} />
-                            {isOutOfStock ? 'Out of Stock' : 'Add to Cart'}
+                            {isOutOfStock ? t('product.out_of_stock') : t('product.add_to_cart')}
                         </button>
                     </div>
 
@@ -189,7 +180,7 @@ const ProductDetail = () => {
             {/* Related Products */}
             {relatedProducts.length > 0 && (
                 <div className="mt-[80px] flex flex-col gap-[24px]">
-                    <h3 className="font-display text-[24px] font-bold text-white">You might also like</h3>
+                    <h3 className="font-display text-[24px] font-bold text-white">{t('product.related')}</h3>
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-[24px]">
                         {relatedProducts.map(related => (
                             <Link key={related._id || related.id} to={`/product/${related._id || related.id}`} className="flex flex-col gap-[12px] group">
