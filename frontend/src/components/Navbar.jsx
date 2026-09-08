@@ -16,6 +16,7 @@ const Navbar = () => {
 
     const [searchQuery, setSearchQuery] = useState('');
     const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+    const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
     const [currentLang, setCurrentLang] = useState(localStorage.getItem('lang') || 'en');
     const userMenuRef = useRef(null);
 
@@ -52,7 +53,7 @@ const Navbar = () => {
     return (
         <>
             {/* --- TOP NAVBAR (Desktop & Mobile) --- */}
-            <header className="sticky top-0 z-50 w-full px-[16px] md:px-[40px] py-[4px] md:py-[6px] bg-[#020617]/90 backdrop-blur-[24px] border-b border-white/10 flex flex-col md:flex-row justify-between items-center transition-all gap-2 md:gap-4">
+            <header className="sticky top-0 z-50 w-full px-[16px] md:px-[40px] pt-[max(12px,env(safe-area-inset-top))] pb-[8px] md:py-[6px] bg-[#020617]/90 backdrop-blur-[24px] border-b border-white/10 flex flex-col md:flex-row justify-between items-center transition-all gap-2 md:gap-4">
                 
                 {/* Logo Section */}
                 <div className="flex items-center gap-4 w-full md:w-auto justify-between md:justify-start">
@@ -72,7 +73,10 @@ const Navbar = () => {
                             <Globe size={12} />
                             {currentLang.toUpperCase()}
                         </button>
-                        <button className="p-2 text-slate-400 hover:text-white transition-colors">
+                        <button
+                            onClick={() => setMobileSearchOpen(prev => !prev)}
+                            className="p-2 text-slate-400 hover:text-white transition-colors"
+                        >
                             <Search size={24} />
                         </button>
                         <Link to="/login" className="p-2 text-slate-400 hover:text-white transition-colors">
@@ -80,6 +84,32 @@ const Navbar = () => {
                         </Link>
                     </div>
                 </div>
+
+                {/* Mobile Search Bar (toggleable) */}
+                <AnimatePresence>
+                    {mobileSearchOpen && (
+                        <motion.div
+                            initial={{ opacity: 0, height: 0 }}
+                            animate={{ opacity: 1, height: 'auto' }}
+                            exit={{ opacity: 0, height: 0 }}
+                            className="w-full overflow-hidden md:hidden"
+                        >
+                            <form onSubmit={(e) => { handleSearch(e); setMobileSearchOpen(false); }} className="relative flex items-center pb-2">
+                                <input
+                                    type="text"
+                                    autoFocus
+                                    value={searchQuery}
+                                    onChange={(e) => setSearchQuery(e.target.value)}
+                                    placeholder={t('nav.search_placeholder')}
+                                    className="w-full pl-4 pr-10 py-[8px] rounded-full bg-white/5 border border-white/10 text-white placeholder-slate-400 focus:outline-none focus:border-[#667eea] transition-all font-sans text-[13px]"
+                                />
+                                <button type="submit" className="absolute right-2 w-7 h-7 rounded-full bg-[#1a1c29] flex items-center justify-center text-slate-300 hover:text-white hover:bg-[#667eea] transition-colors">
+                                    <Search size={14} />
+                                </button>
+                            </form>
+                        </motion.div>
+                    )}
+                </AnimatePresence>
 
                 {/* Search Section (Center) */}
                 <div className="hidden md:flex flex-1 justify-center max-w-xl mx-[24px]">
@@ -105,8 +135,18 @@ const Navbar = () => {
                             {t('nav.home')}
                             {isActive('/') && <div className="absolute -bottom-[20px] left-0 right-0 h-[2px] bg-[#667eea]"></div>}
                         </Link>
-                        <Link to="/?category=all" className="font-sans text-[14px] font-semibold text-slate-400 hover:text-white transition-colors">{t('nav.new_arrivals')}</Link>
-                        <Link to="/?category=all" className="font-sans text-[14px] font-semibold text-slate-400 hover:text-white transition-colors">{t('nav.promotions')}</Link>
+                        <button
+                            onClick={() => { navigate('/?sort=newest'); }}
+                            className="font-sans text-[14px] font-semibold text-slate-400 hover:text-white transition-colors"
+                        >
+                            {t('nav.new_arrivals')}
+                        </button>
+                        <button
+                            onClick={() => toast('🚧 Promotions — Bientôt disponible !', { icon: '🏷️', style: { background: '#0f1524', color: '#fff', border: '1px solid rgba(255,255,255,0.1)' } })}
+                            className="font-sans text-[14px] font-semibold text-slate-400 hover:text-white transition-colors"
+                        >
+                            {t('nav.promotions')}
+                        </button>
                         <a href="#footer" className="font-sans text-[14px] font-semibold text-slate-400 hover:text-white transition-colors">{t('nav.contact')}</a>
                     </nav>
 

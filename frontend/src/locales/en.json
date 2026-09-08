@@ -89,7 +89,13 @@
     "subtotal": "Subtotal",
     "shipping": "Shipping",
     "free": "Free",
-    "total": "Total"
+    "total": "Total",
+    "your_order": "Your Order",
+    "confirmed_title": "Order confirmed!",
+    "confirmed_subtitle": "Order",
+    "estimated_delivery": "Estimated delivery:",
+    "view_order": "View order",
+    "continue_shopping": "Continue shopping"
   },
   "auth": {
     "login_title": "Welcome back",

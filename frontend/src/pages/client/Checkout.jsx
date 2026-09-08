@@ -9,6 +9,8 @@ import { useAuth } from '../../context/AuthContext';
 import API_BASE_URL from '../../config/api';
 import { useTranslation } from 'react-i18next';
 import PaymentCardForm from '../../components/PaymentCard';
+import OrderConfirmation from '../../components/Checkout/OrderConfirmation';
+import OrderSummary from '../../components/Checkout/OrderSummary';
 
 const Checkout = () => {
     const { t } = useTranslation();
@@ -27,7 +29,7 @@ const Checkout = () => {
         zip: ''
     });
 
-    const [paymentMethod, setPaymentMethod] = useState('card'); // 'card' or 'paypal'
+    const [paymentMethod, setPaymentMethod] = useState('card'); // 'card' or 'cash'
 
     useEffect(() => {
         if (user) {
@@ -263,47 +265,19 @@ const Checkout = () => {
                                 }
                             `}
                         </style>
-                        {/* Slight upward curve: starts at y=20, peaks at y=5, ends at y=20 */}
                         <path d="M 0 20 Q 50 5 100 20" stroke="#667eea" strokeWidth="2" strokeDasharray="6 6" strokeOpacity="0.5" className="animate-dash" strokeLinecap="round" />
                     </svg>
                 </div>
 
-                {/* Right Card: Order Confirmation (Mockup static state) */}
+                {/* Right Card: Switches between summary preview and confirmation */}
                 <div className="w-full lg:w-[480px] shrink-0 relative z-10">
-                    <motion.div 
-                        initial={{ opacity: 0, x: 20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        className="bg-[#0f1524] border border-white/5 rounded-[24px] p-[40px] flex flex-col items-center justify-center text-center shadow-2xl min-h-[500px] relative overflow-hidden"
-                    >
-                        {/* Subtle glow behind the checkmark */}
-                        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[150px] h-[150px] bg-[#667eea] rounded-full blur-[60px] opacity-20 pointer-events-none"></div>
-                        
-                        <div className="w-20 h-20 rounded-full bg-gradient-to-br from-[#8a72ee] to-[#667eea] flex items-center justify-center mb-8 shadow-[0_0_40px_rgba(102,126,234,0.4)] relative z-10">
-                            <Check size={40} className="text-white" strokeWidth={3} />
-                        </div>
-                        
-                        <h2 className="font-display text-[24px] font-bold text-white mb-2 relative z-10">Order confirmed!</h2>
-                        <p className="text-[14px] text-slate-400 mb-8 relative z-10">Order #{orderId?.slice(-6).toUpperCase() || 'NO-2410'}</p>
-                        
-                        <div className="border border-[#166534] bg-[#0f291e] text-[#4ade80] px-6 py-3 rounded-[12px] text-[14px] font-bold mb-10 relative z-10">
-                            Estimated delivery: {formattedDate}
-                        </div>
-
-                        <div className="flex flex-col gap-3 w-full relative z-10 mt-auto">
-                            <button 
-                                onClick={() => navigate('/orders')}
-                                className="w-full py-[16px] rounded-[12px] bg-gradient-to-r from-[#667eea] to-[#764ba2] text-white text-[15px] font-bold shadow-lg hover:opacity-90 transition-all"
-                            >
-                                View order
-                            </button>
-                            <button 
-                                onClick={() => navigate('/')}
-                                className="w-full py-[16px] rounded-[12px] bg-[#111827] border border-[#1e293b] text-white text-[15px] font-bold hover:bg-[#1f2937] transition-all"
-                            >
-                                Continue shopping
-                            </button>
-                        </div>
-                    </motion.div>
+                    <AnimatePresence mode="wait">
+                        {success ? (
+                            <OrderConfirmation key="confirmation" orderId={orderId} formattedDate={formattedDate} />
+                        ) : (
+                            <OrderSummary key="summary" cart={cart} totalAmount={totalAmount} />
+                        )}
+                    </AnimatePresence>
                 </div>
             </main>
         </div>

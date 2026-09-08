@@ -74,7 +74,7 @@ const Login = () => {
     };
 
     return (
-        <div className="min-h-screen w-full flex items-center justify-center bg-[#020617] relative overflow-hidden font-sans">
+        <div className="min-h-screen w-full flex items-center justify-center bg-[#020617] relative overflow-y-auto font-sans py-[60px] md:py-0">
             {/* Background Radial Gradient */}
             <div className="absolute inset-0 z-0 flex items-center justify-center pointer-events-none">
                 <div className="w-[800px] h-[800px] bg-[#1e1b4b] rounded-full blur-[120px] opacity-60"></div>

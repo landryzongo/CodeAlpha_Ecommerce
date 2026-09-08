@@ -15,6 +15,7 @@ import Profile from './pages/client/Profile';
 import Orders from './pages/client/Orders';
 import { Navigate } from 'react-router-dom';
 import ProtectedRoute from './components/ProtectedRoute';
+import ErrorBoundary from './components/ErrorBoundary';
 
 function App() {
     const location = useLocation();
@@ -22,78 +23,62 @@ function App() {
 
     if (isStandalonePage) {
         return (
-            <ThemeProvider>
-                <AuthProvider>
-                    <CartProvider>
-                        <Toaster
-                            position="top-right"
-                            toastOptions={{
-                                className: 'dark:bg-slate-900 dark:text-white',
-                                duration: 3000,
-                            }}
-                        />
-                        <Routes>
-                            <Route path="/login" element={<Login />} />
-                        </Routes>
-                    </CartProvider>
-                </AuthProvider>
-            </ThemeProvider>
+            <ErrorBoundary>
+                <ThemeProvider>
+                    <AuthProvider>
+                        <CartProvider>
+                            <Toaster
+                                position="top-right"
+                                toastOptions={{
+                                    className: 'dark:bg-slate-900 dark:text-white',
+                                    duration: 3000,
+                                }}
+                            />
+                            <Routes>
+                                <Route path="/login" element={<Login />} />
+                            </Routes>
+                        </CartProvider>
+                    </AuthProvider>
+                </ThemeProvider>
+            </ErrorBoundary>
         );
     }
 
     return (
-        <ThemeProvider>
-            <AuthProvider>
-                <CartProvider>
-                    <div className="min-h-screen flex flex-col text-white transition-colors duration-300">
-                        <Toaster
-                            position="top-right"
-                            toastOptions={{
-                                className: 'dark:bg-slate-900 dark:text-white',
-                                duration: 3000,
-                            }}
-                        />
-                        <Navbar />
-
-                        {/*
-                          - Desktop: no padding-top needed because TopNavbar is sticky
-                          - Mobile: needs pb-[80px] to not hide content behind the fixed BottomNavbar
-                        */}
-                        <main className="flex-grow w-full pb-[80px] md:pb-0">
-                            <div className="w-full">
-                                <Routes>
-                                    {/* Client Routes */}
-                                    <Route path="/" element={<Home />} />
-                                    <Route path="/product/:id" element={<ProductDetail />} />
-                                    <Route path="/cart" element={<Cart />} />
-                                    
-                                    <Route path="/checkout" element={
-                                        <ProtectedRoute>
-                                            <Checkout />
-                                        </ProtectedRoute>
-                                    } />
-                                    <Route path="/profile" element={
-                                        <ProtectedRoute>
-                                            <Profile />
-                                        </ProtectedRoute>
-                                    } />
-                                    <Route path="/orders" element={
-                                        <ProtectedRoute>
-                                            <Orders />
-                                        </ProtectedRoute>
-                                    } />
-
-                                    {/* Redirect any unknown routes to home */}
-                                    <Route path="*" element={<Navigate to="/" replace />} />
-                                </Routes>
-                            </div>
-                        </main>
-                        
-                        <Footer />
-                    </div>
-                </CartProvider>
-            </AuthProvider>
-        </ThemeProvider>
+        <ErrorBoundary>
+            <ThemeProvider>
+                <AuthProvider>
+                    <CartProvider>
+                        <div className="min-h-screen flex flex-col text-white transition-colors duration-300">
+                            <Toaster
+                                position="top-right"
+                                toastOptions={{
+                                    className: 'dark:bg-slate-900 dark:text-white',
+                                    duration: 3000,
+                                }}
+                            />
+                            <Navbar />
+                            <main className="flex-grow w-full pb-[80px] md:pb-0">
+                                <div className="w-full">
+                                    <Routes>
+                                        {/* Client Routes */}
+                                        <Route path="/" element={<Home />} />
+                                        <Route path="/product/:id" element={<ProductDetail />} />
+                                        <Route path="/cart" element={<Cart />} />
+                                        <Route path="/checkout" element={<ProtectedRoute><Checkout /></ProtectedRoute>} />
+                                        <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+                                        <Route path="/orders" element={<ProtectedRoute><Orders /></ProtectedRoute>} />
+                                        {/* Redirect any unknown routes to home */}
+                                        <Route path="*" element={<Navigate to="/" replace />} />
+                                    </Routes>
+                                </div>
+                            </main>
+                            <Footer />
+                        </div>
+                    </CartProvider>
+                </AuthProvider>
+            </ThemeProvider>
+        </ErrorBoundary>
     );
 }
 

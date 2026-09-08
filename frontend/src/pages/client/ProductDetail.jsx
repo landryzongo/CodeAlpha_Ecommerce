@@ -117,13 +117,11 @@ const ProductDetail = () => {
                         {/* Rating */}
                         <div className="flex items-center gap-[6px]">
                             <div className="flex text-[#fbbf24]">
-                                <Star size={16} fill="currentColor" />
-                                <Star size={16} fill="currentColor" />
-                                <Star size={16} fill="currentColor" />
-                                <Star size={16} fill="currentColor" />
-                                <Star size={16} fill="currentColor" opacity={0.5} />
+                                {[...Array(5)].map((_, i) => (
+                                    <Star key={i} size={16} fill="currentColor" opacity={i < Math.floor((product._id?.charCodeAt(0) % 2) + 4) ? 1 : 0.5} />
+                                ))}
                             </div>
-                            <span className="font-sans text-[13px] text-slate-400 font-semibold">(128 {t('product.reviews')})</span>
+                            <span className="font-sans text-[13px] text-slate-400 font-semibold">({product._id ? (product._id.charCodeAt(0) * 3 + 15) % 300 + 20 : 128} {t('product.reviews')})</span>
                         </div>
                     </div>
 

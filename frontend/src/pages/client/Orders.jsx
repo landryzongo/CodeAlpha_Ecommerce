@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowLeft, Package, ChevronRight, ShoppingBag, Check, RefreshCw } from 'lucide-react';
+import { Package, ChevronRight, ShoppingBag, Check, RefreshCw } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import API_BASE_URL from '../../config/api';
@@ -70,7 +70,10 @@ const Orders = () => {
 
     const fetchOrders = async () => {
         try {
-            const res = await axios.get(`${API_BASE_URL}/orders/myorders`);
+            const token = localStorage.getItem('token');
+            const res = await axios.get(`${API_BASE_URL}/orders/myorders`, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
             setOrders(res.data);
         } catch (err) {
             console.error('Error fetching orders:', err);

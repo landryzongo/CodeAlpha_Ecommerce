@@ -90,7 +90,13 @@
     "subtotal": "Sous-total",
     "shipping": "Livraison",
     "free": "Gratuite",
-    "total": "Total"
+    "total": "Total",
+    "your_order": "Votre commande",
+    "confirmed_title": "Commande confirmée !",
+    "confirmed_subtitle": "Commande",
+    "estimated_delivery": "Livraison estimée :",
+    "view_order": "Voir la commande",
+    "continue_shopping": "Continuer les achats"
   },
   "auth": {
     "login_title": "Bon retour",
