@@ -40,8 +40,8 @@ const productsData = [
   { name: 'AMD Ryzen 7 7800X3D', description: 'Le meilleur processeur gaming du moment.', price: 449, category: 'Composants PC', stock: 22, image: '/uploads/ryzen.jpg' },
 
   // Accessoires
-  { name: 'Chargeur Anker 100W GaN', description: 'Chargeur compact 2 ports USB-C et 1 port USB-A.', price: 69, category: 'Accessoires', stock: 100, image: '/placeholder.png' },
-  { name: 'Câble USB-C vers USB-C tressé', description: 'Câble 2m supportant 100W et transfert 10Gbps.', price: 19, category: 'Accessoires', stock: 200, image: '/placeholder.png' }
+  { name: 'Chargeur Anker 100W GaN', description: 'Chargeur compact 2 ports USB-C et 1 port USB-A.', price: 69, category: 'Accessoires', stock: 100, image: '/uploads/anker.jpg' },
+  { name: 'Câble USB-C vers USB-C tressé', description: 'Câble 2m supportant 100W et transfert 10Gbps.', price: 19, category: 'Accessoires', stock: 200, image: '/uploads/cable.jpg' }
 ];
 
 async function seedDatabase() {
